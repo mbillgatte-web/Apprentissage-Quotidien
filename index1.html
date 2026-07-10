@@ -4,14 +4,6 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Parcours Tech — Débloque tes compétences</title>
-<link rel="manifest" href="./manifest.json">
-<meta name="theme-color" content="#C1121F">
-<link rel="icon" href="./icon-192.png">
-<link rel="apple-touch-icon" href="./icon-192.png">
-<meta name="mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<meta name="apple-mobile-web-app-title" content="Parcours Tech">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;600;700;800&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
@@ -277,7 +269,6 @@ footer .note{font-size:12px;color:var(--ink-soft)}
       <div class="stat"><div class="v red" id="stStreak">0</div><div class="k">Jours de suite</div></div>
       <div class="stat"><div class="v" id="stPct">0%</div><div class="k">Progression</div></div>
     </div>
-    <button class="btn btn-ghost" id="installBtn" style="display:none;margin:16px 0 26px;">📲 Installer l'app sur l'écran d'accueil</button>
   </div>
 </div>
 
@@ -880,29 +871,6 @@ $('ghSave').addEventListener('click', () => {
     ? '✓ Configuration enregistrée — chaque badge débloqué créera un commit.'
     : 'Configuration effacée.';
 });
-
-/* =============== PWA : install + service worker =============== */
-if('serviceWorker' in navigator){
-  window.addEventListener('load', () => {
-    navigator.serviceWorker.register('./sw.js').catch(() => {
-      // pas grave si le SW échoue (ex. ouvert depuis un artefact Claude sans fichier séparé) : l'app reste utilisable en ligne
-    });
-  });
-}
-let deferredInstallPrompt = null;
-window.addEventListener('beforeinstallprompt', (e) => {
-  e.preventDefault();
-  deferredInstallPrompt = e;
-  const btn = $('installBtn');
-  btn.style.display = '';
-  btn.onclick = async () => {
-    btn.style.display = 'none';
-    deferredInstallPrompt.prompt();
-    await deferredInstallPrompt.userChoice;
-    deferredInstallPrompt = null;
-  };
-});
-window.addEventListener('appinstalled', () => { $('installBtn').style.display = 'none'; });
 
 /* =============== INIT =============== */
 (async () => {
