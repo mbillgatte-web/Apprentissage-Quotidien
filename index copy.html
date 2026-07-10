@@ -1,0 +1,921 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Parcours Tech — Débloque tes compétences</title>
+<link rel="manifest" href="./manifest.json">
+<meta name="theme-color" content="#C1121F">
+<link rel="icon" href="./icon-192.png">
+<link rel="apple-touch-icon" href="./icon-192.png">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Parcours Tech">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;600;700;800&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --paper:#FFFFFF;
+  --paper-soft:#FAFAFB;
+  --ink:#1B2430;
+  --ink-soft:#5B6572;
+  --line:#E7E9EE;
+  --red:#C1121F;
+  --red-hot:#FF4D5E;
+  --red-grad:linear-gradient(120deg,#C1121F 0%,#FF4D5E 100%);
+  --red-tint:#FDF1F2;
+  --radius:14px;
+  --shadow:0 1px 3px rgba(27,36,48,.06), 0 8px 24px rgba(27,36,48,.07);
+}
+*{box-sizing:border-box}
+html,body{margin:0;padding:0}
+body{
+  background:var(--paper-soft);
+  color:var(--ink);
+  font-family:'Inter',sans-serif;
+  font-size:15px;
+  line-height:1.6;
+  padding-bottom:90px;
+}
+.wrap{max-width:860px;margin:0 auto;padding:0 18px}
+
+/* ---------- Header ---------- */
+.hero{
+  background:var(--paper);
+  border-bottom:1px solid var(--line);
+  padding:34px 0 0;
+  margin-bottom:30px;
+}
+.hero-inner{max-width:860px;margin:0 auto;padding:0 18px}
+.eyebrow{
+  font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.14em;
+  text-transform:uppercase;color:var(--red);margin:0 0 8px;
+}
+h1{
+  font-family:'Archivo',sans-serif;font-weight:800;font-size:clamp(26px,4.5vw,38px);
+  letter-spacing:-.02em;margin:0 0 6px;
+}
+h1 .grad{
+  background:var(--red-grad);-webkit-background-clip:text;background-clip:text;color:transparent;
+}
+.hero p.sub{color:var(--ink-soft);margin:0;max-width:560px;font-size:14.5px}
+
+.statbar{
+  display:flex;gap:0;margin-top:26px;border-top:1px solid var(--line);
+}
+.stat{
+  flex:1;padding:16px 4px 18px;text-align:center;border-right:1px solid var(--line);
+}
+.stat:last-child{border-right:none}
+.stat .v{
+  font-family:'Archivo',sans-serif;font-weight:700;font-size:24px;line-height:1;
+}
+.stat .v.red{color:var(--red)}
+.stat .k{
+  font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.1em;
+  text-transform:uppercase;color:var(--ink-soft);margin-top:6px;
+}
+
+/* ---------- Cartes génériques ---------- */
+.card{
+  background:var(--paper);border:1px solid var(--line);border-radius:var(--radius);
+  box-shadow:var(--shadow);
+}
+
+/* ---------- Panneau "Aujourd'hui" ---------- */
+.today{
+  position:relative;overflow:hidden;
+  padding:22px 24px;margin-bottom:34px;
+  animation:rise .5s ease both;
+}
+.today::after{
+  content:"";position:absolute;inset:0 0 auto 0;height:4px;background:var(--red-grad);
+}
+.today .tag{
+  font-family:'JetBrains Mono',monospace;font-size:10.5px;letter-spacing:.12em;
+  text-transform:uppercase;color:var(--red);display:block;margin-bottom:6px;
+}
+.today h2{font-family:'Archivo',sans-serif;font-weight:700;font-size:19px;margin:0 0 6px}
+.today p{color:var(--ink-soft);font-size:13.5px;margin:0 0 14px;max-width:600px}
+.btn{
+  font-family:'Inter',sans-serif;font-weight:600;font-size:13.5px;
+  border:none;border-radius:9px;padding:10px 18px;cursor:pointer;
+  transition:transform .13s ease,box-shadow .13s ease,filter .13s ease;
+}
+.btn:focus-visible{outline:2px solid var(--red);outline-offset:2px}
+.btn-red{background:var(--red-grad);color:#fff;box-shadow:0 4px 14px rgba(193,18,31,.28)}
+.btn-red:hover{filter:brightness(1.06);transform:translateY(-1px)}
+.btn-red:active{transform:scale(.97)}
+.btn-ghost{background:transparent;border:1px solid var(--line);color:var(--ink-soft)}
+.btn-ghost:hover{border-color:var(--ink-soft);color:var(--ink)}
+
+/* ---------- Pistes / modules ---------- */
+.track{margin-bottom:38px;animation:rise .5s ease both}
+.track-head{display:flex;justify-content:space-between;align-items:flex-end;gap:14px;margin-bottom:14px;flex-wrap:wrap}
+.track-head h3{font-family:'Archivo',sans-serif;font-weight:700;font-size:17px;margin:0;display:flex;gap:10px;align-items:center}
+.track-index{
+  font-family:'JetBrains Mono',monospace;font-size:11px;color:#fff;
+  background:var(--ink);border-radius:6px;padding:3px 8px;
+}
+.pbar{width:130px;height:6px;background:var(--line);border-radius:3px;overflow:hidden}
+.pbar>div{height:100%;background:var(--red-grad);border-radius:3px;transition:width .6s cubic-bezier(.2,.7,.3,1)}
+.ppct{font-family:'JetBrains Mono',monospace;font-size:11.5px;color:var(--ink-soft)}
+.pwrap{display:flex;align-items:center;gap:10px}
+
+.module{margin-bottom:12px;overflow:hidden;transition:box-shadow .2s ease}
+.module.locked{opacity:.55;box-shadow:none}
+.module.current{border-color:#F0B9BE}
+.mod-head{
+  display:flex;align-items:center;gap:14px;padding:16px 18px;cursor:pointer;
+  user-select:none;
+}
+.module.locked .mod-head{cursor:not-allowed}
+.badge{
+  width:44px;height:44px;flex:none;position:relative;
+  display:flex;align-items:center;justify-content:center;
+}
+.badge svg{position:absolute;inset:0;width:100%;height:100%}
+.badge .hex-fill{fill:var(--line);transition:fill .3s ease}
+.badge.on .hex-fill{fill:url(#gradRed)}
+.badge .icn{position:relative;font-size:17px;line-height:1;filter:grayscale(1);opacity:.65}
+.badge.on .icn{filter:none;opacity:1}
+.badge.pop{animation:badgepop .7s cubic-bezier(.2,1.4,.4,1) both}
+.mod-titles{flex:1;min-width:0}
+.mod-titles .t{font-family:'Archivo',sans-serif;font-weight:600;font-size:15px}
+.mod-titles .b{font-size:12px;color:var(--ink-soft);font-family:'JetBrains Mono',monospace}
+.mod-state{font-size:12px;font-family:'JetBrains Mono',monospace;color:var(--ink-soft);flex:none;display:flex;align-items:center;gap:6px}
+.mod-state .dot{width:8px;height:8px;border-radius:50%;background:var(--line)}
+.module.done .mod-state{color:var(--red)}
+.module.done .mod-state .dot{background:var(--red)}
+.module.current .mod-state .dot{background:var(--red-hot);animation:pulse 1.6s infinite}
+
+.mod-body{display:none;border-top:1px solid var(--line);padding:20px 22px 24px;background:var(--paper)}
+.module.open .mod-body{display:block;animation:rise .35s ease both}
+
+.section-lbl{
+  font-family:'JetBrains Mono',monospace;font-size:10.5px;letter-spacing:.12em;
+  text-transform:uppercase;color:var(--red);margin:0 0 8px;display:flex;align-items:center;gap:8px;
+}
+.section-lbl::after{content:"";flex:1;height:1px;background:var(--line)}
+.lesson p{margin:0 0 12px;color:var(--ink);font-size:14px}
+.lesson p:last-child{margin-bottom:0}
+.lesson strong{color:var(--red)}
+.lesson code, .ex code{
+  font-family:'JetBrains Mono',monospace;font-size:12.5px;background:var(--red-tint);
+  color:var(--red);padding:1px 6px;border-radius:5px;
+}
+.ex{margin-top:22px}
+.ex-item{
+  display:flex;gap:10px;align-items:flex-start;padding:9px 12px;border:1px solid var(--line);
+  border-radius:9px;margin-bottom:8px;font-size:13.5px;background:var(--paper-soft);
+}
+.ex-item .n{
+  font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--red);flex:none;margin-top:2px;
+}
+
+/* ---------- Quiz ---------- */
+.quiz{margin-top:22px}
+.q{margin-bottom:16px}
+.q .qt{font-weight:600;font-size:14px;margin:0 0 8px}
+.opt{
+  display:flex;align-items:center;gap:10px;padding:10px 12px;border:1.5px solid var(--line);
+  border-radius:9px;margin-bottom:7px;font-size:13.5px;cursor:pointer;background:var(--paper);
+  transition:border-color .15s ease,background .15s ease;
+}
+.opt:hover{border-color:#D6AEB2}
+.opt.sel{border-color:var(--red);background:var(--red-tint)}
+.opt.ok{border-color:#2E9E6B;background:#EFF9F3}
+.opt.ko{border-color:var(--red-hot);background:var(--red-tint)}
+.opt .radio{
+  width:16px;height:16px;border-radius:50%;border:2px solid var(--line);flex:none;position:relative;
+}
+.opt.sel .radio{border-color:var(--red)}
+.opt.sel .radio::after{
+  content:"";position:absolute;inset:3px;border-radius:50%;background:var(--red);
+}
+.quiz-foot{display:flex;align-items:center;gap:14px;margin-top:14px;flex-wrap:wrap}
+.quiz-msg{font-size:13px;font-weight:600}
+.quiz-msg.ok{color:#2E9E6B}
+.quiz-msg.ko{color:var(--red)}
+
+/* ---------- Rappels ---------- */
+.remind{padding:22px 24px;margin-top:40px;animation:rise .5s ease both}
+.remind h3{font-family:'Archivo',sans-serif;font-size:16px;margin:0 0 6px;font-weight:700}
+.remind p{font-size:13px;color:var(--ink-soft);margin:0 0 14px;max-width:620px}
+.remind-row{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+.remind input[type="time"]{
+  font-family:'JetBrains Mono',monospace;font-size:13px;padding:9px 12px;
+  border:1px solid var(--line);border-radius:9px;color:var(--ink);background:var(--paper);
+}
+.remind-status{font-size:12px;font-family:'JetBrains Mono',monospace;color:var(--ink-soft);margin-top:10px;min-height:14px}
+.remind input[type="text"],.remind input[type="password"]{
+  font-family:'Inter',sans-serif;font-size:13px;padding:9px 12px;border:1px solid var(--line);
+  border-radius:9px;color:var(--ink);background:var(--paper);min-width:0;flex:1 1 150px;
+}
+.remind code{
+  font-family:'JetBrains Mono',monospace;font-size:12px;background:var(--red-tint);
+  color:var(--red);padding:1px 6px;border-radius:5px;
+}
+a.btn{text-decoration:none;display:inline-flex;align-items:center}
+
+footer{margin-top:36px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px}
+footer .note{font-size:12px;color:var(--ink-soft)}
+
+/* ---------- Toast déblocage ---------- */
+#toast{
+  position:fixed;left:50%;bottom:26px;transform:translateX(-50%) translateY(120%);
+  background:var(--ink);color:#fff;border-radius:12px;padding:14px 20px;
+  display:flex;align-items:center;gap:12px;box-shadow:0 12px 34px rgba(27,36,48,.3);
+  transition:transform .45s cubic-bezier(.2,1.2,.3,1);z-index:50;max-width:92vw;
+}
+#toast.show{transform:translateX(-50%) translateY(0)}
+#toast .icn{font-size:22px}
+#toast .tt{font-family:'Archivo',sans-serif;font-weight:700;font-size:14px}
+#toast .ts{font-size:12px;opacity:.75}
+
+/* ---------- Animations ---------- */
+@keyframes rise{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+@keyframes pulse{0%,100%{box-shadow:0 0 0 0 rgba(255,77,94,.4)}50%{box-shadow:0 0 0 6px rgba(255,77,94,0)}}
+@keyframes badgepop{0%{transform:scale(.4) rotate(-15deg)}60%{transform:scale(1.18) rotate(4deg)}100%{transform:scale(1) rotate(0)}}
+@media (prefers-reduced-motion:reduce){
+  *,*::before,*::after{animation:none!important;transition:none!important}
+}
+@media (max-width:600px){
+  body{font-size:14.5px}
+  .statbar{flex-wrap:wrap}
+  .stat{flex:1 1 40%;border-bottom:1px solid var(--line)}
+  .mod-state .lbltxt{display:none}
+  .hero{padding-top:26px}
+  .today{padding:18px 16px}
+  .mod-head{padding:14px 13px;gap:11px}
+  .mod-body{padding:16px 14px 20px}
+  .remind{padding:18px 16px}
+  .remind-row .btn{flex:1 1 auto;text-align:center;justify-content:center}
+  .opt{padding:11px 12px}
+}
+</style>
+</head>
+<body>
+
+<svg width="0" height="0" style="position:absolute">
+  <defs>
+    <linearGradient id="gradRed" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#C1121F"/><stop offset="100%" stop-color="#FF4D5E"/>
+    </linearGradient>
+  </defs>
+</svg>
+
+<div class="hero">
+  <div class="hero-inner">
+    <p class="eyebrow">Parcours personnel · Bill</p>
+    <h1>Débloque tes <span class="grad">compétences tech</span></h1>
+    <p class="sub">Chaque module = une leçon, un exercice pratique, puis un quiz. Réussis le quiz pour débloquer le badge et le module suivant.</p>
+    <div class="statbar">
+      <div class="stat"><div class="v red" id="stXP">0</div><div class="k">XP</div></div>
+      <div class="stat"><div class="v" id="stBadges">0/12</div><div class="k">Badges</div></div>
+      <div class="stat"><div class="v red" id="stStreak">0</div><div class="k">Jours de suite</div></div>
+      <div class="stat"><div class="v" id="stPct">0%</div><div class="k">Progression</div></div>
+    </div>
+    <button class="btn btn-ghost" id="installBtn" style="display:none;margin:16px 0 26px;">📲 Installer l'app sur l'écran d'accueil</button>
+  </div>
+</div>
+
+<div class="wrap">
+
+  <div class="card today" id="todayCard">
+    <span class="tag">Ta mission du jour</span>
+    <h2 id="todayTitle">—</h2>
+    <p id="todayDesc">—</p>
+    <button class="btn btn-red" id="todayBtn">Ouvrir le module</button>
+  </div>
+
+  <div id="tracksHost"></div>
+
+  <div class="card remind">
+    <h3>⏰ Rappels quotidiens</h3>
+    <p>Une page web ne peut pas t'alerter quand elle est fermée. Deux options fiables : active les notifications navigateur (fonctionnent quand cette page est ouverte), et surtout ajoute le rappel récurrent à ton Google Calendar — il te notifiera sur ton téléphone chaque jour.</p>
+    <div class="remind-row">
+      <input type="time" id="remindTime" value="19:00" aria-label="Heure du rappel">
+      <button class="btn btn-ghost" id="notifBtn">Activer les notifications (page ouverte)</button>
+      <a class="btn btn-red" id="gcalBtn" target="_blank" rel="noopener"
+         href="https://calendar.google.com/calendar/render?action=TEMPLATE&text=%F0%9F%93%9A%20Session%20tech%20%E2%80%94%2020%20min&details=Ouvre%20ta%20feuille%20de%20route%20et%20avance%20d%27un%20module.&recur=RRULE:FREQ%3DDAILY">
+        Ajouter à Google Calendar (quotidien)
+      </a>
+    </div>
+    <div class="remind-status" id="remindStatus"></div>
+  </div>
+
+  <div class="card remind">
+    <h3>🐙 Push GitHub à chaque badge</h3>
+    <p>À chaque badge débloqué, un commit est créé automatiquement dans un repo de ton compte (crée par exemple un repo <code>learning-log</code> avec un README). Ça alimente ton graphe de contributions. Utilise un <strong>fine-grained token</strong> limité à ce seul repo avec la permission « Contents : Read and write » (GitHub → Settings → Developer settings → Fine-grained tokens).</p>
+    <div class="remind-row">
+      <input type="text" id="ghUser" placeholder="Utilisateur GitHub" aria-label="Utilisateur GitHub">
+      <input type="text" id="ghRepo" placeholder="Repo (ex. learning-log)" aria-label="Nom du repo">
+      <input type="password" id="ghToken" placeholder="Fine-grained token" aria-label="Token GitHub">
+      <button class="btn btn-red" id="ghSave">Enregistrer</button>
+    </div>
+    <div class="remind-status" id="ghStatus"></div>
+  </div>
+
+  <footer>
+    <span class="note">Progression sauvegardée automatiquement.</span>
+    <button class="btn btn-ghost" id="resetBtn">Réinitialiser</button>
+  </footer>
+</div>
+
+<div id="toast"><span class="icn">🏅</span><div><div class="tt" id="toastTitle">Badge débloqué</div><div class="ts" id="toastSub"></div></div></div>
+
+<script>
+/* =============== DONNÉES DU PARCOURS =============== */
+const CURRICULUM = [
+{
+  id:'devops', name:'DevOps & Cloud', idx:'01',
+  modules:[
+  {
+    id:'d1', icon:'📦', title:'Conteneurs vs machines virtuelles', badge:'Fondations Docker',
+    lesson:[
+      "Une <strong>machine virtuelle (VM)</strong> émule un ordinateur complet : elle embarque son propre système d'exploitation, ce qui la rend lourde (plusieurs Go) et lente à démarrer (minutes). Un <strong>conteneur</strong> partage le noyau du système hôte et n'embarque que ton application et ses dépendances : quelques Mo, démarrage en secondes.",
+      "C'est pour ça que Docker a tout changé : ton app tourne <strong>exactement pareil</strong> sur ta machine, celle d'un collègue, ou un serveur de production. Fini le fameux « ça marche sur ma machine ». Un conteneur est créé à partir d'une <strong>image</strong> (le modèle figé) — un peu comme un objet est créé à partir d'une classe."
+    ],
+    exercise:[
+      "Installe Docker Desktop (Windows) et vérifie avec <code>docker --version</code>",
+      "Lance ton premier conteneur : <code>docker run hello-world</code> et lis attentivement le message qui explique ce qui vient de se passer",
+      "Lance un serveur web en 1 commande : <code>docker run -p 8080:80 nginx</code> puis ouvre <code>localhost:8080</code>"
+    ],
+    quiz:[
+      {q:"Quelle est la principale différence entre un conteneur et une VM ?",
+       o:["Le conteneur partage le noyau de l'OS hôte, la VM embarque un OS complet","Le conteneur est toujours plus sécurisé qu'une VM","Une VM démarre plus vite qu'un conteneur"],a:0},
+      {q:"Dans Docker, une image c'est :",
+       o:["Un conteneur en cours d'exécution","Le modèle figé à partir duquel on crée des conteneurs","Une capture d'écran du serveur"],a:1},
+      {q:"Pourquoi Docker résout le problème « ça marche sur ma machine » ?",
+       o:["Parce qu'il rend le code plus rapide","Parce que l'app est empaquetée avec toutes ses dépendances et tourne à l'identique partout","Parce qu'il corrige automatiquement les bugs"],a:1}
+    ]
+  },
+  {
+    id:'d2', icon:'🐳', title:'Écrire un Dockerfile', badge:'Conteneuriseur',
+    lesson:[
+      "Un <strong>Dockerfile</strong> est la recette qui construit ton image : chaque ligne est une instruction. Les essentielles : <code>FROM</code> (l'image de base, ex. node:20), <code>WORKDIR</code> (le dossier de travail), <code>COPY</code> (copier ton code dedans), <code>RUN</code> (exécuter une commande au build, ex. npm install), <code>EXPOSE</code> (documenter le port) et <code>CMD</code> (la commande de démarrage).",
+      "Chaque instruction crée une <strong>couche</strong> mise en cache : si tu copies d'abord <code>package.json</code> et installes les dépendances <em>avant</em> de copier le reste du code, Docker ne réinstalle pas tout à chaque modification. C'est LA bonne pratique n°1."
+    ],
+    exercise:[
+      "Prends une de tes apps (ex. ton projet WiFi hotspot ou une petite API Express)",
+      "Écris un Dockerfile : <code>FROM node:20-alpine</code> → <code>WORKDIR /app</code> → <code>COPY package*.json .</code> → <code>RUN npm install</code> → <code>COPY . .</code> → <code>CMD [\"node\",\"index.js\"]</code>",
+      "Construis et lance : <code>docker build -t mon-app .</code> puis <code>docker run -p 3000:3000 mon-app</code>"
+    ],
+    quiz:[
+      {q:"À quoi sert l'instruction FROM dans un Dockerfile ?",
+       o:["À définir l'image de base sur laquelle on construit","À copier les fichiers du projet","À démarrer le conteneur"],a:0},
+      {q:"Pourquoi copier package.json et faire npm install AVANT de copier le reste du code ?",
+       o:["C'est obligatoire, sinon Docker plante","Pour profiter du cache des couches : les dépendances ne se réinstallent pas à chaque changement de code","Pour réduire la taille de l'image finale de moitié"],a:1},
+      {q:"Quelle commande construit une image à partir d'un Dockerfile ?",
+       o:["docker run","docker build","docker start"],a:1}
+    ]
+  },
+  {
+    id:'d3', icon:'☸️', title:'Kubernetes : à quoi ça sert', badge:'Orchestrateur',
+    lesson:[
+      "Docker gère UN conteneur. Mais en production, tu en as des dizaines : plusieurs copies de ton API pour absorber le trafic, une base de données, un cache… <strong>Kubernetes (K8s)</strong> est l'orchestrateur : tu lui décris l'état voulu (« je veux 3 copies de mon API, toujours ») et il s'en charge en permanence.",
+      "Concrètement, K8s <strong>redémarre</strong> automatiquement un conteneur qui plante, <strong>répartit le trafic</strong> entre les copies (load balancing), et peut <strong>scaler</strong> automatiquement (ajouter des copies quand le trafic monte). Vocabulaire clé : un <strong>Pod</strong> = la plus petite unité (1+ conteneurs), un <strong>Deployment</strong> = la règle qui maintient N pods en vie."
+    ],
+    exercise:[
+      "Regarde une vidéo « Kubernetes explained » (~10 min) et note dans un fichier ce que sont Pod, Deployment, Service",
+      "Explique à voix haute (ou à ton partenaire Tiam) pourquoi une entreprise avec 50 microservices ne peut pas se contenter de docker run",
+      "Bonus : essaie <code>minikube</code> ou Docker Desktop (Kubernetes intégré) et lance <code>kubectl get pods</code>"
+    ],
+    quiz:[
+      {q:"Quel est le rôle principal de Kubernetes ?",
+       o:["Remplacer Docker pour construire des images","Orchestrer des conteneurs : maintenir l'état voulu, redémarrer, répartir la charge","Héberger le code source comme GitHub"],a:1},
+      {q:"Si un conteneur plante en pleine nuit, Kubernetes :",
+       o:["Envoie un email et attend une intervention humaine","Le redémarre automatiquement pour maintenir l'état déclaré","Supprime le déploiement par sécurité"],a:1},
+      {q:"Un Pod, c'est :",
+       o:["La plus petite unité déployable dans Kubernetes","Le nom du serveur physique","Un fichier de configuration Docker"],a:0}
+    ]
+  },
+  {
+    id:'d4', icon:'🔁', title:'Pipeline CI/CD', badge:'Pipeline Master',
+    lesson:[
+      "<strong>CI (intégration continue)</strong> : à chaque push sur GitHub, un robot compile ton code et lance les tests automatiquement. Si un test échoue, l'équipe le sait en minutes — pas en production. <strong>CD (déploiement continu)</strong> : si tout est vert, le code est déployé automatiquement.",
+      "Le pipeline typique : <strong>push → build → tests → déploiement</strong>. Avec <strong>GitHub Actions</strong>, tout se décrit dans un fichier YAML placé dans <code>.github/workflows/</code>. Tu utilises déjà n8n pour automatiser tes workflows : un pipeline CI/CD, c'est exactement la même logique appliquée au cycle de vie du code."
+    ],
+    exercise:[
+      "Sur un de tes repos GitHub, crée <code>.github/workflows/ci.yml</code>",
+      "Fais-lui exécuter à chaque push : checkout du code, installation des dépendances, puis un test simple (même juste <code>node --check index.js</code>)",
+      "Pousse un commit et observe l'onglet « Actions » de ton repo : c'est ton premier pipeline"
+    ],
+    quiz:[
+      {q:"Que se passe-t-il en intégration continue (CI) à chaque push ?",
+       o:["Le code est envoyé directement en production sans vérification","Le code est automatiquement compilé et testé","Une sauvegarde du serveur est créée"],a:1},
+      {q:"L'ordre correct d'un pipeline classique est :",
+       o:["Déploiement → tests → build","Build → tests → déploiement","Tests → déploiement → build"],a:1},
+      {q:"Dans GitHub Actions, un workflow est défini par :",
+       o:["Un fichier YAML dans .github/workflows/","Un bouton dans les paramètres du repo","Un Dockerfile spécial"],a:0}
+    ]
+  }
+]},
+{
+  id:'ml', name:'Machine Learning & Deep Learning', idx:'02',
+  modules:[
+  {
+    id:'m1', icon:'🧠', title:'IA, ML, DL : qui fait quoi', badge:'Vocabulaire IA',
+    lesson:[
+      "Les termes s'emboîtent comme des poupées russes. <strong>IA</strong> = toute technique qui simule une capacité intelligente. <strong>Machine Learning</strong> = sous-domaine de l'IA où la machine <em>apprend des règles à partir de données</em> au lieu qu'on les programme à la main. <strong>Deep Learning</strong> = sous-domaine du ML utilisant des réseaux de neurones à nombreuses couches.",
+      "Les 3 grands types d'apprentissage : <strong>supervisé</strong> (données étiquetées : « cette image = chat »), <strong>non supervisé</strong> (la machine trouve seule des groupes dans les données), <strong>par renforcement</strong> (l'agent apprend par essai/erreur avec des récompenses). Les LLM comme Claude sont du deep learning entraîné sur du texte."
+    ],
+    exercise:[
+      "Dessine sur papier les 3 cercles imbriqués IA ⊃ ML ⊃ DL avec 1 exemple concret dans chaque zone",
+      "Classe ces cas : filtre anti-spam Gmail / recommandations Netflix / une IA qui apprend à jouer aux échecs seule — supervisé, non supervisé ou renforcement ?",
+      "Explique en 2 phrases à un non-technicien la différence entre programmer des règles et apprendre des règles"
+    ],
+    quiz:[
+      {q:"Quelle relation est correcte ?",
+       o:["Le ML est un sous-domaine du Deep Learning","Le Deep Learning est un sous-domaine du Machine Learning, lui-même sous-domaine de l'IA","IA et ML sont deux domaines totalement séparés"],a:1},
+      {q:"L'apprentissage supervisé nécessite :",
+       o:["Des données étiquetées (entrée + bonne réponse)","Aucune donnée","Un humain qui surveille l'ordinateur en temps réel"],a:0},
+      {q:"Ce qui distingue le ML de la programmation classique :",
+       o:["Le ML est écrit uniquement en Python","En ML, la machine déduit les règles à partir des données au lieu qu'on les code à la main","Le ML n'utilise pas d'ordinateur"],a:1}
+    ]
+  },
+  {
+    id:'m2', icon:'📈', title:'Construire ton premier modèle', badge:'Premier Modèle',
+    lesson:[
+      "La <strong>régression linéaire</strong> est le « hello world » du ML : prédire une valeur numérique (ex. un prix) à partir d'une ou plusieurs variables. Le modèle cherche la droite qui colle le mieux aux données.",
+      "Le workflow ML est toujours le même : <strong>1)</strong> préparer les données, <strong>2)</strong> les séparer en jeu d'entraînement et jeu de test (ex. 80/20 — on ne teste JAMAIS sur les données d'entraînement), <strong>3)</strong> entraîner avec <code>model.fit()</code>, <strong>4)</strong> prédire avec <code>model.predict()</code>, <strong>5)</strong> mesurer l'erreur. Retiens ce squelette : il ne change presque jamais, même pour des modèles complexes."
+    ],
+    exercise:[
+      "Installe scikit-learn : <code>pip install scikit-learn</code>",
+      "Crée un dataset simple (ex. surface d'un logement → loyer à Yaoundé, 15-20 lignes inventées mais réalistes)",
+      "Entraîne une <code>LinearRegression</code>, sépare train/test avec <code>train_test_split</code>, puis prédis le loyer d'une surface jamais vue et vérifie si c'est plausible"
+    ],
+    quiz:[
+      {q:"Pourquoi séparer les données en train et test ?",
+       o:["Pour entraîner deux fois plus vite","Pour évaluer le modèle sur des données qu'il n'a jamais vues, comme en conditions réelles","Parce que scikit-learn refuse de fonctionner sinon"],a:1},
+      {q:"Dans scikit-learn, quelle méthode entraîne le modèle ?",
+       o:["model.predict()","model.fit()","model.train_hard()"],a:1},
+      {q:"La régression linéaire sert à :",
+       o:["Prédire une valeur numérique continue à partir de variables","Classer des images de chats et chiens","Générer du texte"],a:0}
+    ]
+  },
+  {
+    id:'m3', icon:'🕸️', title:"Réseaux de neurones : l'intuition", badge:'Neurone Curieux',
+    lesson:[
+      "Un <strong>neurone artificiel</strong> fait un calcul très simple : il multiplie chaque entrée par un <strong>poids</strong>, additionne le tout, et applique une fonction d'activation. Seul, il est bête. Mais en empilant des <strong>couches</strong> de milliers de neurones, le réseau peut apprendre des motifs très complexes.",
+      "L'apprentissage : le réseau fait une prédiction, on mesure l'<strong>erreur</strong> par rapport à la bonne réponse, et un algorithme (la rétropropagation) <strong>ajuste légèrement tous les poids</strong> pour réduire cette erreur. Répété des millions de fois, le réseau « apprend ». C'est exactement ce processus, à échelle géante, qui a produit les LLM que tu utilises tous les jours."
+    ],
+    exercise:[
+      "Va sur <code>playground.tensorflow.org</code> et joue 15 min : ajoute/retire des couches et observe comment le réseau sépare les points",
+      "Note ce que tu observes quand il y a 0 couche cachée vs 2 couches sur un dataset en spirale",
+      "Explique avec tes mots ce qu'est un « poids » et pourquoi l'entraînement consiste à les ajuster"
+    ],
+    quiz:[
+      {q:"Que fait fondamentalement un neurone artificiel ?",
+       o:["Il stocke une base de données","Somme pondérée des entrées + fonction d'activation","Il exécute du code JavaScript"],a:1},
+      {q:"Pendant l'entraînement, qu'est-ce qui est ajusté ?",
+       o:["Les poids des connexions, pour réduire l'erreur","La couleur des neurones","Le nombre de données d'entrée"],a:0},
+      {q:"Pourquoi empiler plusieurs couches ?",
+       o:["Pour faire joli sur les schémas","Pour permettre au réseau d'apprendre des motifs de plus en plus complexes","Pour réduire le temps de calcul"],a:1}
+    ]
+  },
+  {
+    id:'m4', icon:'🚀', title:'Le ML dans une vraie application', badge:'ML Intégrateur',
+    lesson:[
+      "Un modèle entraîné n'est utile que s'il est <strong>servi</strong> : on le sauvegarde (ex. <code>joblib</code>), puis on l'expose derrière une <strong>API</strong> (Flask/FastAPI). Ton front envoie les données en POST, l'API renvoie la prédiction en JSON. Exactement le pattern que tu connais déjà en full-stack — le modèle n'est qu'un service de plus.",
+      "Deux notions pro à connaître : la <strong>latence d'inférence</strong> (le temps que met le modèle à répondre, critique pour l'UX) et le choix <strong>appeler une API existante</strong> (OpenAI, Anthropic — rapide, pas d'entraînement) vs <strong>entraîner son propre modèle</strong> (contrôle et coût maîtrisé, mais expertise et données nécessaires). En agence, savoir arbitrer entre les deux est une vraie compétence de conseil — utile pour AGI."
+    ],
+    exercise:[
+      "Sauvegarde ton modèle du module précédent avec <code>joblib.dump(model, 'model.pkl')</code>",
+      "Crée une mini API FastAPI avec une route <code>/predict</code> qui charge le modèle et renvoie la prédiction en JSON",
+      "Appelle-la depuis une petite page HTML avec <code>fetch()</code> : tu viens de faire du ML full-stack"
+    ],
+    quiz:[
+      {q:"Comment un front-end utilise-t-il typiquement un modèle ML ?",
+       o:["Il embarque le fichier .pkl directement dans le navigateur","Il appelle une API qui charge le modèle et renvoie la prédiction","Il réentraîne le modèle à chaque clic"],a:1},
+      {q:"La latence d'inférence, c'est :",
+       o:["Le temps d'entraînement total du modèle","Le temps que met le modèle à produire une prédiction","Le délai de téléchargement du dataset"],a:1},
+      {q:"Quand privilégier une API IA existante (ex. Anthropic) plutôt qu'entraîner son modèle ?",
+       o:["Jamais, un vrai dev entraîne toujours son modèle","Quand on veut aller vite sans données ni expertise d'entraînement, pour un besoin généraliste","Uniquement pour les projets gouvernementaux"],a:1}
+    ]
+  }
+]},
+{
+  id:'prod', name:'Production : charge, latence & sécurité', idx:'03',
+  modules:[
+  {
+    id:'p1', icon:'⚖️', title:'Combien de requêtes ton app supporte-t-elle ?', badge:'Load Tester',
+    lesson:[
+      "La capacité d'une app se mesure en <strong>requêtes par seconde (RPS)</strong>. Elle est limitée par le maillon le plus faible : CPU, mémoire, nombre de connexions à la base de données, ou I/O réseau. On ne devine pas cette limite — on la <strong>mesure</strong> avec un test de charge.",
+      "Des outils comme <strong>k6</strong> ou <strong>autocannon</strong> simulent des centaines d'utilisateurs simultanés et te donnent : le RPS max, la latence moyenne et surtout la <strong>p95/p99</strong> (le temps de réponse des 5% ou 1% de requêtes les plus lentes — c'est elles que tes utilisateurs les plus malchanceux vivent). Règle d'or : teste AVANT la mise en production, pas après le crash."
+    ],
+    exercise:[
+      "Installe autocannon : <code>npm i -g autocannon</code>",
+      "Lance une de tes API en local puis bombarde-la : <code>autocannon -c 100 -d 10 http://localhost:3000</code> (100 connexions, 10 secondes)",
+      "Note le RPS et la latence p99. Ajoute une requête DB dans la route et re-teste : observe la chute"
+    ],
+    quiz:[
+      {q:"Que mesure un test de charge ?",
+       o:["La qualité du design de l'interface","Le nombre de requêtes/seconde supportées et la latence sous trafic","Le nombre de bugs dans le code"],a:1},
+      {q:"La latence p99 signifie :",
+       o:["99% des requêtes répondent en moins de ce temps","Le serveur est utilisé à 99%","99 requêtes ont échoué"],a:0},
+      {q:"Le goulot d'étranglement d'une app est généralement :",
+       o:["Toujours le CPU","Le maillon le plus faible : CPU, mémoire, DB ou réseau selon les cas","La taille du fichier HTML"],a:1}
+    ]
+  },
+  {
+    id:'p2', icon:'⚡', title:'Réduire la latence', badge:'Speed Optimizer',
+    lesson:[
+      "La latence s'attaque par ordre d'impact. <strong>1) Le cache</strong> : ne recalcule pas ce qui n'a pas changé — Redis pour les résultats de requêtes fréquentes, cache HTTP pour les réponses. <strong>2) Le CDN</strong> : sert tes fichiers statiques (images, JS, CSS) depuis un serveur proche de l'utilisateur — crucial pour tes clients entre le Cameroun, la France et les USA. <strong>3) La base de données</strong> : un <strong>index</strong> sur les colonnes filtrées transforme une requête de 2 secondes en 20 ms ; et évite le problème <strong>N+1</strong> (1 requête qui en déclenche 100 en boucle).",
+      "Côté front : compresse les images (WebP), charge le JS non critique en différé (<code>defer</code>), et mesure avec <strong>Lighthouse</strong> dans Chrome DevTools. Objectif pro : un chargement initial sous 3 secondes sur mobile."
+    ],
+    exercise:[
+      "Lance un audit Lighthouse sur un de tes sites en production (ex. ceimport.onhercules.app) et note le score Performance",
+      "Applique 2 corrections proposées (compression d'images, defer, cache headers) et re-mesure",
+      "Sur une requête DB fréquente d'un de tes projets, ajoute un index et compare le temps avant/après"
+    ],
+    quiz:[
+      {q:"À quoi sert un CDN ?",
+       o:["À sécuriser la base de données","À servir les fichiers statiques depuis un serveur géographiquement proche de l'utilisateur","À compiler le code plus vite"],a:1},
+      {q:"Un index sur une colonne de base de données :",
+       o:["Accélère fortement les recherches filtrées sur cette colonne","Supprime les doublons automatiquement","Chiffre les données"],a:0},
+      {q:"Le problème « N+1 requêtes », c'est :",
+       o:["Une requête principale qui déclenche une requête supplémentaire par élément, en boucle","Un serveur qui a un processeur de trop","Une erreur 404 répétée"],a:0}
+    ]
+  },
+  {
+    id:'p3', icon:'🛡️', title:'Sécurité : les failles classiques', badge:'Gardien du Code',
+    lesson:[
+      "Les 3 failles à connaître absolument. <strong>Injection SQL</strong> : si tu concatènes l'entrée utilisateur dans une requête (<code>\"SELECT * WHERE nom='\" + input + \"'\"</code>), un attaquant peut injecter du SQL et vider ta base. Parade : <strong>requêtes paramétrées</strong>, toujours. <strong>XSS</strong> : injecter du JavaScript dans une page via un champ mal échappé — parade : échapper/assainir toute donnée affichée. <strong>Secrets exposés</strong> : une clé API commitée sur GitHub est compromise en minutes (des bots scannent en continu) — parade : variables d'environnement + <code>.env</code> dans le <code>.gitignore</code>.",
+      "Ajoute à cela : <strong>HTTPS partout</strong> (sinon les données transitent en clair), mots de passe <strong>hachés avec bcrypt</strong> (jamais en clair, jamais en simple MD5), et <strong>validation côté serveur</strong> de toute entrée — la validation côté client se contourne en 10 secondes avec DevTools."
+    ],
+    exercise:[
+      "Audite un de tes projets : cherche toute requête SQL construite par concaténation et remplace-la par une requête paramétrée",
+      "Vérifie tes repos GitHub : aucun fichier .env ou clé API commitée ? Ajoute .env au .gitignore partout",
+      "Vérifie que les mots de passe de tes apps sont hachés avec bcrypt et que la validation existe côté serveur"
+    ],
+    quiz:[
+      {q:"La parade principale contre l'injection SQL :",
+       o:["Interdire les apostrophes dans les formulaires","Utiliser des requêtes paramétrées (prepared statements)","Cacher l'URL de la base de données"],a:1},
+      {q:"Pourquoi la validation côté client ne suffit-elle pas ?",
+       o:["Elle est trop lente","Elle se contourne facilement : il faut toujours revalider côté serveur","Elle ne fonctionne pas sur mobile"],a:1},
+      {q:"Une clé API doit être stockée :",
+       o:["Dans le code source, c'est plus pratique","Dans une variable d'environnement, jamais commitée sur Git","Dans un commentaire du README"],a:1}
+    ]
+  },
+  {
+    id:'p4', icon:'🔍', title:'Logs & monitoring en production', badge:'Œil de Prod',
+    lesson:[
+      "En production, tu ne peux pas ouvrir la console : tes <strong>logs</strong> sont tes yeux. Un bon log est structuré (JSON), horodaté, avec un <strong>niveau</strong> (info, warn, error) et du contexte (ID utilisateur, route, durée). Un <code>console.log('erreur!')</code> sans contexte ne t'aidera jamais à 2h du matin.",
+      "Le <strong>monitoring</strong> surveille en continu : taux d'erreurs, latence, CPU/mémoire — avec des <strong>alertes</strong> qui te préviennent AVANT que les utilisateurs se plaignent (ex. « alerte si taux d'erreurs > 1% pendant 5 min »). Des outils comme <strong>Sentry</strong> (erreurs) ou <strong>UptimeRobot</strong> (disponibilité) ont des plans gratuits parfaits pour tes projets. Réflexe pro : un bug en prod se diagnostique par les logs, se corrige, puis on ajoute une alerte pour qu'il ne revienne jamais silencieusement."
+    ],
+    exercise:[
+      "Ajoute un logger structuré (ex. <code>pino</code>) à une de tes API : chaque requête loggée avec route, statut et durée",
+      "Crée un compte Sentry gratuit et intègre-le à un projet : déclenche volontairement une erreur et retrouve-la dans le dashboard",
+      "Configure UptimeRobot sur un de tes sites en production pour être alerté par email s'il tombe"
+    ],
+    quiz:[
+      {q:"Un bon log en production doit contenir :",
+       o:["Uniquement le message d'erreur","Horodatage, niveau (info/warn/error) et contexte (route, utilisateur, durée)","Le code source complet de la fonction"],a:1},
+      {q:"Le but d'une alerte de monitoring :",
+       o:["Être prévenu d'un problème avant que les utilisateurs le subissent massivement","Remplacer les tests unitaires","Ralentir les attaquants"],a:0},
+      {q:"Un utilisateur signale un bug en production. Ton premier réflexe :",
+       o:["Redémarrer le serveur immédiatement","Consulter les logs autour du moment de l'incident pour comprendre","Supprimer la fonctionnalité concernée"],a:1}
+    ]
+  }
+]}
+];
+
+const XP_PER_MODULE = 100;
+const ALL_MODULES = CURRICULUM.flatMap(t => t.modules);
+const TOTAL = ALL_MODULES.length;
+
+/* =============== ÉTAT & PERSISTANCE =============== */
+let state = { done:{}, streak:{count:0,last:null}, remindTime:'19:00', gh:{user:'',repo:'',token:''} };
+const $ = id => document.getElementById(id);
+
+function todayStr(){ return new Date().toISOString().slice(0,10); }
+function yesterdayStr(){ const d=new Date(); d.setDate(d.getDate()-1); return d.toISOString().slice(0,10); }
+
+const STORE_KEY = 'parcours-tech-v2';
+const hasClaudeStorage = (typeof window !== 'undefined') && window.storage && typeof window.storage.get === 'function';
+
+async function load(){
+  try{
+    if(hasClaudeStorage){
+      const r = await window.storage.get(STORE_KEY, false);
+      if(r && r.value) state = Object.assign(state, JSON.parse(r.value));
+    } else {
+      const v = localStorage.getItem(STORE_KEY);
+      if(v) state = Object.assign(state, JSON.parse(v));
+    }
+  }catch(e){ /* première visite */ }
+}
+async function save(){
+  try{
+    if(hasClaudeStorage){
+      await window.storage.set(STORE_KEY, JSON.stringify(state), false);
+    } else {
+      localStorage.setItem(STORE_KEY, JSON.stringify(state));
+    }
+  }
+  catch(e){ console.error('save failed', e); }
+}
+
+function isDone(id){ return !!state.done[id]; }
+function moduleIndex(id){ return ALL_MODULES.findIndex(m => m.id === id); }
+function isUnlocked(id){
+  const i = moduleIndex(id);
+  if(i === 0) return true;
+  return isDone(ALL_MODULES[i-1].id);
+}
+function nextModule(){ return ALL_MODULES.find(m => !isDone(m.id)) || null; }
+
+function bumpStreak(){
+  const t = todayStr();
+  if(state.streak.last === t) return;
+  state.streak.count = (state.streak.last === yesterdayStr()) ? state.streak.count + 1 : 1;
+  state.streak.last = t;
+}
+
+/* =============== RENDU =============== */
+function render(){
+  const doneCount = ALL_MODULES.filter(m => isDone(m.id)).length;
+  $('stXP').textContent = doneCount * XP_PER_MODULE;
+  $('stBadges').textContent = doneCount + '/' + TOTAL;
+  $('stStreak').textContent = state.streak.count;
+  $('stPct').textContent = Math.round(doneCount/TOTAL*100) + '%';
+
+  const nm = nextModule();
+  if(nm){
+    $('todayTitle').textContent = nm.icon + ' ' + nm.title;
+    $('todayDesc').textContent = 'Lis la leçon, fais l\u2019exercice pratique, puis valide le quiz pour débloquer le badge « ' + nm.badge + ' ».';
+    $('todayBtn').style.display = '';
+    $('todayBtn').onclick = () => {
+      const el = document.querySelector('[data-mod="'+nm.id+'"]');
+      if(el){ openModule(nm.id); el.scrollIntoView({behavior:'smooth', block:'start'}); }
+    };
+  } else {
+    $('todayTitle').textContent = '🏆 Parcours terminé — 12 badges débloqués';
+    $('todayDesc').textContent = 'Tu as validé les fondations DevOps, ML et Production. Prochaine étape : approfondir en projet réel.';
+    $('todayBtn').style.display = 'none';
+  }
+
+  const host = $('tracksHost');
+  const openIds = new Set([...document.querySelectorAll('.module.open')].map(e => e.dataset.mod));
+  host.innerHTML = '';
+
+  CURRICULUM.forEach(track => {
+    const dc = track.modules.filter(m => isDone(m.id)).length;
+    const pct = Math.round(dc / track.modules.length * 100);
+    const tEl = document.createElement('div');
+    tEl.className = 'track';
+    tEl.innerHTML = `
+      <div class="track-head">
+        <h3><span class="track-index">${track.idx}</span>${track.name}</h3>
+        <div class="pwrap"><div class="pbar"><div style="width:${pct}%"></div></div><span class="ppct">${pct}%</span></div>
+      </div>
+      <div class="modules"></div>`;
+    host.appendChild(tEl);
+    const mHost = tEl.querySelector('.modules');
+
+    track.modules.forEach(m => {
+      const done = isDone(m.id), unlocked = isUnlocked(m.id);
+      const current = nm && nm.id === m.id;
+      const el = document.createElement('div');
+      el.className = 'card module' + (done?' done':'') + (!unlocked?' locked':'') + (current?' current':'') + (openIds.has(m.id)?' open':'');
+      el.dataset.mod = m.id;
+      el.innerHTML = `
+        <div class="mod-head" role="button" tabindex="${unlocked?0:-1}" aria-expanded="${openIds.has(m.id)}">
+          <div class="badge ${done?'on':''}">
+            <svg viewBox="0 0 44 44"><polygon class="hex-fill" points="22,2 40,12 40,32 22,42 4,32 4,12"/></svg>
+            <span class="icn">${unlocked ? m.icon : '🔒'}</span>
+          </div>
+          <div class="mod-titles">
+            <div class="t">${m.title}</div>
+            <div class="b">Badge : ${m.badge}</div>
+          </div>
+          <div class="mod-state"><span class="dot"></span><span class="lbltxt">${done?'Validé':(unlocked?(current?'En cours':'Disponible'):'Verrouillé')}</span></div>
+        </div>
+        <div class="mod-body">
+          <p class="section-lbl">Leçon</p>
+          <div class="lesson">${m.lesson.map(p=>'<p>'+p+'</p>').join('')}</div>
+          <div class="ex">
+            <p class="section-lbl">Exercice pratique</p>
+            ${m.exercise.map((e,i)=>'<div class="ex-item"><span class="n">'+String(i+1).padStart(2,'0')+'</span><span>'+e+'</span></div>').join('')}
+          </div>
+          <div class="quiz" data-quiz="${m.id}">
+            <p class="section-lbl">Quiz de validation — ${done?'déjà réussi ✓':'2/3 minimum pour débloquer'}</p>
+            ${m.quiz.map((q,qi)=>`
+              <div class="q" data-q="${qi}">
+                <p class="qt">${qi+1}. ${q.q}</p>
+                ${q.o.map((o,oi)=>`<div class="opt" data-o="${oi}" role="button" tabindex="0"><span class="radio"></span><span>${o}</span></div>`).join('')}
+              </div>`).join('')}
+            <div class="quiz-foot">
+              <button class="btn btn-red quiz-submit">Valider le quiz</button>
+              <span class="quiz-msg"></span>
+            </div>
+          </div>
+        </div>`;
+
+      const head = el.querySelector('.mod-head');
+      head.addEventListener('click', () => { if(unlocked) toggleModule(m.id); });
+      head.addEventListener('keydown', e => { if(unlocked && (e.key==='Enter'||e.key===' ')){ e.preventDefault(); toggleModule(m.id); } });
+
+      // quiz interactions
+      el.querySelectorAll('.opt').forEach(opt => {
+        const pick = () => {
+          const q = opt.closest('.q');
+          q.querySelectorAll('.opt').forEach(o => o.classList.remove('sel','ok','ko'));
+          opt.classList.add('sel');
+        };
+        opt.addEventListener('click', pick);
+        opt.addEventListener('keydown', e => { if(e.key==='Enter'||e.key===' '){ e.preventDefault(); pick(); } });
+      });
+
+      el.querySelector('.quiz-submit').addEventListener('click', () => gradeQuiz(m, el));
+      mHost.appendChild(el);
+    });
+  });
+}
+
+function toggleModule(id){
+  const el = document.querySelector('[data-mod="'+id+'"]');
+  if(el) el.classList.toggle('open');
+}
+function openModule(id){
+  const el = document.querySelector('[data-mod="'+id+'"]');
+  if(el) el.classList.add('open');
+}
+
+function gradeQuiz(m, el){
+  const msg = el.querySelector('.quiz-msg');
+  let answered = 0, correct = 0;
+  m.quiz.forEach((q, qi) => {
+    const qEl = el.querySelector('.q[data-q="'+qi+'"]');
+    const sel = qEl.querySelector('.opt.sel');
+    if(!sel) return;
+    answered++;
+    const oi = parseInt(sel.dataset.o, 10);
+    qEl.querySelectorAll('.opt').forEach(o => o.classList.remove('ok','ko'));
+    if(oi === q.a){ correct++; sel.classList.add('ok'); }
+    else {
+      sel.classList.add('ko');
+      qEl.querySelector('.opt[data-o="'+q.a+'"]').classList.add('ok');
+    }
+  });
+  if(answered < m.quiz.length){
+    msg.textContent = 'Réponds aux ' + m.quiz.length + ' questions avant de valider.';
+    msg.className = 'quiz-msg ko';
+    return;
+  }
+  if(correct >= 2){
+    msg.textContent = 'Réussi : ' + correct + '/3 ✓';
+    msg.className = 'quiz-msg ok';
+    if(!isDone(m.id)){
+      state.done[m.id] = { date: todayStr(), score: correct };
+      bumpStreak();
+      save();
+      showToast(m);
+      pushBadgeToGitHub(m);
+      setTimeout(render, 900);
+    }
+  } else {
+    msg.textContent = correct + '/3 — relis la leçon et retente, les bonnes réponses sont indiquées.';
+    msg.className = 'quiz-msg ko';
+  }
+}
+
+function showToast(m){
+  $('toastTitle').textContent = 'Badge débloqué : ' + m.badge;
+  $('toastSub').textContent = '+' + XP_PER_MODULE + ' XP · module suivant déverrouillé';
+  const t = $('toast');
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 3400);
+}
+
+/* =============== RAPPELS =============== */
+let notifTimer = null;
+function scheduleNotif(){
+  if(notifTimer) clearTimeout(notifTimer);
+  if(!('Notification' in window) || Notification.permission !== 'granted') return;
+  const [h, min] = (state.remindTime || '19:00').split(':').map(Number);
+  const now = new Date();
+  const target = new Date();
+  target.setHours(h, min, 0, 0);
+  if(target <= now) target.setDate(target.getDate() + 1);
+  notifTimer = setTimeout(() => {
+    const nm = nextModule();
+    new Notification('📚 Session tech du jour', {
+      body: nm ? ('Module en cours : ' + nm.title) : 'Parcours terminé — révise un badge !'
+    });
+    scheduleNotif();
+  }, target - now);
+  $('remindStatus').textContent = 'Notification programmée à ' + state.remindTime + ' (tant que cette page reste ouverte).';
+}
+
+$('notifBtn').addEventListener('click', async () => {
+  if(!('Notification' in window)){
+    $('remindStatus').textContent = 'Notifications non supportées par ce navigateur.';
+    return;
+  }
+  const perm = await Notification.requestPermission();
+  if(perm === 'granted'){ scheduleNotif(); }
+  else { $('remindStatus').textContent = 'Permission refusée — utilise plutôt le rappel Google Calendar.'; }
+});
+
+$('remindTime').addEventListener('change', e => {
+  state.remindTime = e.target.value;
+  save();
+  scheduleNotif();
+});
+
+$('resetBtn').addEventListener('click', async () => {
+  if(!confirm('Réinitialiser toute ta progression (badges, XP, streak) ?')) return;
+  state = { done:{}, streak:{count:0,last:null}, remindTime: state.remindTime, gh: state.gh };
+  await save();
+  render();
+});
+
+/* =============== PUSH GITHUB =============== */
+function b64utf8(str){ return btoa(unescape(encodeURIComponent(str))); }
+
+async function pushBadgeToGitHub(m){
+  const gh = state.gh || {};
+  if(!gh.user || !gh.repo || !gh.token) return;
+  const st = $('ghStatus');
+  st.textContent = 'Push du badge vers GitHub…';
+  const date = todayStr();
+  const path = 'badges/' + date + '-' + m.id + '.md';
+  const content = '# 🏅 Badge débloqué : ' + m.badge + '\n\n' +
+    '- **Module** : ' + m.title + '\n' +
+    '- **Date** : ' + date + '\n' +
+    '- **Parcours** : Feuille de route technique (DevOps · ML · Production)\n';
+  try{
+    const res = await fetch('https://api.github.com/repos/' + gh.user + '/' + gh.repo + '/contents/' + encodeURIComponent(path), {
+      method:'PUT',
+      headers:{
+        'Authorization':'Bearer ' + gh.token,
+        'Accept':'application/vnd.github+json',
+        'Content-Type':'application/json'
+      },
+      body: JSON.stringify({ message:'🏅 Badge débloqué : ' + m.badge, content: b64utf8(content) })
+    });
+    if(res.ok){
+      st.textContent = '✓ Commit créé sur ' + gh.user + '/' + gh.repo + ' → ' + path;
+    } else {
+      const err = await res.json().catch(() => ({}));
+      st.textContent = 'Échec du push (' + res.status + ') : ' + (err.message || 'vérifie le token, le repo et ses permissions.');
+    }
+  }catch(e){
+    st.textContent = 'Erreur réseau — le badge est débloqué localement, le commit sera à refaire.';
+  }
+}
+
+$('ghSave').addEventListener('click', () => {
+  state.gh = {
+    user: $('ghUser').value.trim(),
+    repo: $('ghRepo').value.trim(),
+    token: $('ghToken').value.trim()
+  };
+  save();
+  $('ghStatus').textContent = state.gh.token
+    ? '✓ Configuration enregistrée — chaque badge débloqué créera un commit.'
+    : 'Configuration effacée.';
+});
+
+/* =============== PWA : install + service worker =============== */
+if('serviceWorker' in navigator){
+  window.addEventListener('load', () => {
+    navigator.serviceWorker.register('./sw.js').catch(() => {
+      // pas grave si le SW échoue (ex. ouvert depuis un artefact Claude sans fichier séparé) : l'app reste utilisable en ligne
+    });
+  });
+}
+let deferredInstallPrompt = null;
+window.addEventListener('beforeinstallprompt', (e) => {
+  e.preventDefault();
+  deferredInstallPrompt = e;
+  const btn = $('installBtn');
+  btn.style.display = '';
+  btn.onclick = async () => {
+    btn.style.display = 'none';
+    deferredInstallPrompt.prompt();
+    await deferredInstallPrompt.userChoice;
+    deferredInstallPrompt = null;
+  };
+});
+window.addEventListener('appinstalled', () => { $('installBtn').style.display = 'none'; });
+
+/* =============== INIT =============== */
+(async () => {
+  await load();
+  $('remindTime').value = state.remindTime || '19:00';
+  if(state.gh){
+    $('ghUser').value = state.gh.user || '';
+    $('ghRepo').value = state.gh.repo || '';
+    $('ghToken').value = state.gh.token || '';
+  }
+  render();
+  if('Notification' in window && Notification.permission === 'granted') scheduleNotif();
+})();
+</script>
+</body>
+</html>
